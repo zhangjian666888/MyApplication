@@ -1,9 +1,9 @@
 package com.example.myapplication.utils;
 
 
-import com.mysql.jdbc.Connection;
-
+import java.sql.Connection;
 import java.sql.DriverManager;
+
 
 /**
  * @author: ZhangJian
@@ -20,15 +20,11 @@ public class DBOpenHelper {
         Connection conn = null;
         try {
             Class.forName(diver);
-//            Driver driver = new Driver();
-//            Properties info = new Properties();
-//            info.setProperty("user", user);
-//            info.setProperty("password", password);
-//            conn = (Connection) driver.connect(url, info);
             conn = (Connection) DriverManager.getConnection(url, user, password);
+            return conn;
         }catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return conn;
     }
 }
