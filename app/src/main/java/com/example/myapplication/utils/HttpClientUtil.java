@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class HttpClientUtil {
     private static final String TAG = "HttpClient";
-    String url = "http://43.143.181.73:8080";
+    String url = "http://192.168.105.253:8080";
     public OkHttpClient client;
 
     public HttpClientUtil(){
@@ -34,8 +34,9 @@ public class HttpClientUtil {
 
     public ResponseBody postMethod(RequestBody formBody, String serviceName, Map<String, Object> headersMap) throws IOException {
         Request.Builder builder = new Request.Builder().url(url + serviceName);
-        builder.post(formBody);
-        //builder.method("POST", formBody);
+        if(formBody != null){
+            builder.post(formBody);
+        }
         if(headersMap != null){
             for (Map.Entry<String, Object> entry : headersMap.entrySet()) {
                 String key = entry.getKey();

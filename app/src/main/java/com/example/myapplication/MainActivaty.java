@@ -6,8 +6,21 @@ import android.view.View;
 import android.widget.ImageButton;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.example.myapplication.model.JsonResult;
+import com.example.myapplication.service.LoginService;
+import com.example.myapplication.utils.HttpClientUtil;
+import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 
-import java.sql.*;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 /**
@@ -16,9 +29,11 @@ import java.sql.*;
  * @description:
  */
 public class MainActivaty extends AppCompatActivity implements View.OnClickListener {
-
     private static final String TAG = "MainActivaty";
     private ImageButton loginButton;
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +43,22 @@ public class MainActivaty extends AppCompatActivity implements View.OnClickListe
         initEvent();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    /** Stops the camera. */
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
     private void initEvent() {
         loginButton.setOnClickListener(this);
     }
@@ -35,26 +66,10 @@ public class MainActivaty extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         int id = v.getId();
         if(id == R.id.loginButton){
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    String diver = "com.mysql.jdbc.Driver";
-                    String url = "jdbc:mysql://43.143.181.73:3306/hospital?useUnicode=true&characterEncoding=UTF-8";
-                    String user = "root";
-                    String password = "MySQL%5.7";
-                    try {
-                        Class.forName(diver).newInstance();
-                        Connection conn = (Connection) DriverManager.getConnection(url, user, password);
-                        String sql = "select * from b_coupe";
-                        PreparedStatement statement = conn.prepareStatement(sql);
-                        ResultSet resultSet = statement.executeQuery();
-                        Log.i(TAG, "结果：" + resultSet.toString());
-                        Log.i(TAG, "登录");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("userName", "zshz");
+            jsonObject.put("password", "Zs1234");
+            LoginService.loginApp(jsonObject);
         }
     }
 }
