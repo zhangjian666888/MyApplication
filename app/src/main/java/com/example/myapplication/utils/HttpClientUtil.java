@@ -1,12 +1,12 @@
 package com.example.myapplication.utils;
 
 
-import android.util.Log;
 import okhttp3.*;
 
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import static com.example.myapplication.utils.CommonUtil.url;
 
 
 /**
@@ -16,7 +16,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class HttpClientUtil {
     private static final String TAG = "HttpClient";
-    String url = "http://192.168.105.253:8080";
     public OkHttpClient client;
 
     public HttpClientUtil(){

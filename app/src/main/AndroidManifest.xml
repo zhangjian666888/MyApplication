@@ -22,12 +22,17 @@
 
         <activity android:name="com.example.myapplication.MainActivaty"
                   android:theme="@style/AppTheme"
-                  android:launchMode="standard">
+                  android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-
         </activity>
+
+        <activity android:name="com.example.myapplication.activaties.LoginActivaty"
+                  android:theme="@style/AppTheme"
+                  android:launchMode="singleTask">
+        </activity>
+
     </application>
 </manifest>
