@@ -1,21 +1,24 @@
 package com.example.myapplication.activaties;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.MotionEvent;
-import android.view.View;
+import android.view.*;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import com.alibaba.fastjson.JSONObject;
 import com.example.myapplication.R;
 import com.example.myapplication.service.LoginService;
+import com.example.myapplication.utils.SharedPreferencesUtils;
 
 public class LoginActivaty extends AppCompatActivity implements
         View.OnFocusChangeListener,
@@ -37,14 +40,42 @@ public class LoginActivaty extends AppCompatActivity implements
                 case 1:
                     JSONObject obj = (JSONObject) msg.obj;
                     if(obj.getBoolean("success")){
-
+                        SharedPreferencesUtils.putString(LoginActivaty.this, "token", obj.getString("data"));
+                        Intent intent = new Intent(LoginActivaty.this, RecoveryActivaty.class);
+                        startActivity(intent);
                     }else {
-
+                        ConstraintLayout constraintLayout = (ConstraintLayout) LayoutInflater.from(LoginActivaty.this).inflate(R.layout.public_box, null);
+                        TextView boxContent = (TextView) constraintLayout.findViewById(R.id.box_content);
+                        boxContent.setText(obj.getString("msg"));
+                        AlertDialog dialog = new AlertDialog.Builder(LoginActivaty.this).create();
+                        dialog.setView(constraintLayout);
+                        dialog.show();
+                        dialog.setCanceledOnTouchOutside(true);
+                        setAlertDialogBackground(dialog);
+                        dialog.setCancelable(false);
+                        TextView boxButton = (TextView) constraintLayout.findViewById(R.id.box_button);
+                        boxButton.setOnClickListener(a->{
+                            dialog.dismiss();
+                        });
                     }
                     break;
             }
         }
     };
+    private void setAlertDialogBackground(AlertDialog dialog){
+        Window window = dialog.getWindow();
+        if (null != window) {
+            window.setBackgroundDrawableResource(android.R.color.transparent);
+            window.setGravity(Gravity.CENTER);
+            WindowManager windowManager = LoginActivaty.this.getWindowManager();
+            Display display = windowManager.getDefaultDisplay();
+            WindowManager.LayoutParams params = window.getAttributes();
+            params.width = (int) (display.getWidth() * 0.90f);
+            params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            window.setAttributes(params);
+            window.getDecorView().setPadding(0, 0, 0, 0);
+        }
+    }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
